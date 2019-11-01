@@ -11,6 +11,8 @@ public class Firing : MonoBehaviour
     public Transform bulletParent;
     public float projectileSpeed;
     public float fireCooldown;
+    public float bulletDamage;
+    public float bulletLifeTime;
     
     GameObject[] bullets;
     float remainingCooldown;
@@ -27,8 +29,6 @@ public class Firing : MonoBehaviour
     {
         if (remainingCooldown > 0) {
             remainingCooldown -= Time.deltaTime;
-        } else {
-            remainingCooldown = fireCooldown;
         }
     }
 
@@ -37,6 +37,9 @@ public class Firing : MonoBehaviour
         if (remainingCooldown > 0)
             return;
         
+        Debug.Log("Firing");
+        remainingCooldown = fireCooldown;
+
         bool spawned = false;
         int emptyIndex = -1;
         GameObject firedBullet = null;
@@ -63,10 +66,14 @@ public class Firing : MonoBehaviour
         }
 
         if (firedBullet != null) {
-            firedBullet.SetActive(true);
-
+            Bullet bullet = firedBullet.GetComponent<Bullet>();
+            bullet.damage = bulletDamage;
+            bullet.lifeTime = bulletLifeTime;
+            bullet.Shoot();
             Vector2 force = transform.right * flipTransform.localScale.x * 2 * projectileSpeed; // local scale is [-0.5, 0.5], so multiply by 2
             firedBullet.GetComponent<Rigidbody2D>().AddForce(force);
+        } else {
+            Debug.LogError("No fired bullet!");
         }
     }
 }

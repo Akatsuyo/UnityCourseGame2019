@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump")) {
             jumped = true;
         }
-
+        
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 vectorToTarget = mousePos - (Vector2)transform.position;
         float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
