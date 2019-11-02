@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
-    public GameObject parentEntity;
+    public Transform parent;
     public Vector3 delta;
 
     Transform health;
@@ -19,14 +19,12 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = parentEntity.transform.position + delta;
+        transform.position = parent.position + delta;
     }
 
-    public void SetHealth(float healthPercent)
+    public void UpdateBar(float healthPercent)
     {
-        if (!gameObject.activeSelf && healthPercent < 1) {
-            gameObject.SetActive(true);
-        }
+        gameObject.SetActive(healthPercent != 1);
         health.localScale = new Vector2(healthPercent, 1);
     }
 }

@@ -6,6 +6,7 @@ public class SmoothCamera : MonoBehaviour
 {
     public Transform following;
     public float smoothTime;
+    public Vector3 followTransform;
 
     Vector3 vel = Vector3.zero;
 
@@ -18,7 +19,7 @@ public class SmoothCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 target = following.TransformPoint(new Vector3(0, 5, -10));
+        Vector3 target = following.TransformPoint(followTransform);
         transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, smoothTime);
     }
 }
