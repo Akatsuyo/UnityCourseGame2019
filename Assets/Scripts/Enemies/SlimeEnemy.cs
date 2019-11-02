@@ -21,7 +21,7 @@ public class SlimeEnemy : MonoBehaviour
     new Rigidbody2D rigidbody;
     Animator animator;
     GameObject healthBar;
-    ParticleSystem bloodParticles;
+    //ParticleSystem bloodParticles;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +32,7 @@ public class SlimeEnemy : MonoBehaviour
         healthBar = healthBarSpawner.GetComponent<HealthBarSpawner>().CreateHealthBar(gameObject, new Vector3(0, 1, 0));
         currHealth = maxHealth;
 
-        bloodParticles = GetComponent<ParticleSystem>();
+        //bloodParticles = GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -44,7 +44,7 @@ public class SlimeEnemy : MonoBehaviour
         if (currHealth <= 0) {
             for (int i = 0; i < coins; i++)
             {
-                Vector2 dir = new Vector2(Random.Range(-0.4f, 0.4f), 1);
+                Vector2 dir = new Vector2(Random.Range(0, 100) * 0.006f - 0.3f, Random.Range(0.8f, 1));
                 Debug.Log(dir);
                 GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
                 coin.GetComponent<Rigidbody2D>().AddForce(dir.normalized * coinForce, ForceMode2D.Impulse);
@@ -92,8 +92,8 @@ public class SlimeEnemy : MonoBehaviour
             float damage = other.gameObject.GetComponent<Bullet>().damage;
             currHealth -= damage;
 
-            bloodParticles.Emit(20);
-
+            //bloodParticles.Emit(20);
+            
             healthBar.GetComponent<HealthBar>().SetHealth(currHealth / maxHealth);
         }
     }

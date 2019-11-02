@@ -39,7 +39,6 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log(other.gameObject.name);
         gameObject.SetActive(false);
         remainingLifeTime = lifeTime;
     }

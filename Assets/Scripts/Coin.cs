@@ -16,7 +16,7 @@ public class Coin : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.name == "Stickman") {
             other.gameObject.GetComponent<CoinBank>().AddCoins(1);
             Destroy(gameObject);

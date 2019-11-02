@@ -37,7 +37,6 @@ public class Firing : MonoBehaviour
         if (remainingCooldown > 0)
             return;
         
-        Debug.Log("Firing");
         remainingCooldown = fireCooldown;
 
         bool spawned = false;
@@ -58,7 +57,7 @@ public class Firing : MonoBehaviour
 
         if (!spawned) {
             if (emptyIndex == -1) {
-                Debug.Log("Warning: Bullet pool exhausted!");
+                Debug.LogError("Warning: Bullet pool exhausted!");
             } else {
                 bullets[emptyIndex] = Instantiate(bulletPrefab, projectileStart.position, transform.rotation, bulletParent);
                 firedBullet = bullets[emptyIndex];
