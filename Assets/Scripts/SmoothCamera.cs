@@ -20,6 +20,6 @@ public class SmoothCamera : MonoBehaviour
     void Update()
     {
         Vector3 target = following.TransformPoint(followTransform);
-        transform.position = Vector3.SmoothDamp(transform.position, target, ref vel, smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(target.x, target.y, transform.position.z), ref vel, smoothTime);
     }
 }
