@@ -14,6 +14,10 @@ public class Level : MonoBehaviour {
         playerSpawn = transform.Find(Constants.PLAYER_SPAWN_NAME);
     }
 
+    private void Update() {
+        
+    }
+
     public void RespawnEnemies() {
         foreach (Transform enemyTr in enemies)
         {
@@ -25,5 +29,9 @@ public class Level : MonoBehaviour {
     public void RespawnPlayer() {
         PlayerController controller = player.gameObject.GetComponent<PlayerController>();
         controller.Respawn(playerSpawn.position);
+    }
+
+    public void OnFinished() {
+        Utils.GameController.OnLevelFinished();
     }
 }

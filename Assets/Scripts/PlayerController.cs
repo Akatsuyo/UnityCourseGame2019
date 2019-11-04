@@ -51,8 +51,9 @@ public class PlayerController : MonoBehaviour
         health = GetComponent<Health>();
 
         // Temp testing
-        hasWeapon = true;
-        firing = weapon.GetComponent<Firing>();
+        hasWeapon = weapon != null;
+        if (hasWeapon)
+            firing = weapon.GetComponent<Firing>();
     }
 
     // Update is called once per frame
@@ -73,7 +74,7 @@ public class PlayerController : MonoBehaviour
                 Flip();
         }
 
-        if (Input.GetMouseButton(0)) {
+        if (hasWeapon && Input.GetMouseButton(0)) {
             firing.Fire();
         }
 
@@ -126,7 +127,7 @@ public class PlayerController : MonoBehaviour
     void CheckHealth()
     {
         if (!health.HasHealth())
-            Utils.GetGameController().ResetLevel();
+            Utils.GameController.ResetLevel();
     }
 
     void AimWeapon()
