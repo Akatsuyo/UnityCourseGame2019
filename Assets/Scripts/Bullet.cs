@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float lifeTime;
-    public float damage;
-
+    float damage;
     float remainingLifeTime;
 
     new Rigidbody2D rigidbody;
+    Vector2 force;
+    bool shoot;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +18,10 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (remainingLifeTime < 0) {
-            gameObject.SetActive(false);
-            remainingLifeTime = lifeTime;
-        } else {
+        if (remainingLifeTime > 0) {
             remainingLifeTime -= Time.deltaTime;
+        } else {
+            gameObject.SetActive(false); // Pooling
         }
 
         if (rigidbody.velocity != Vector2.zero) {
@@ -32,15 +29,24 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Shoot()
+    void FixedUpdate() {
+        if (shoot) {
+            rigidbody.AddForce(force);
+            shoot = false;
+        }
+    }
+
+    public void Shoot(float damage, float lifeTime, Vector2 direction, float speed)
     {
+        this.damage = damage;
         remainingLifeTime = lifeTime;
         gameObject.SetActive(true);
+        shoot = true;
+        force = direction.normalized * speed * 100;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        gameObject.SetActive(false);
-        remainingLifeTime = lifeTime;
+        gameObject.SetActive(false); // Pooling
         Utils.TryInflictDamage(other.gameObject, damage);
     }
 }

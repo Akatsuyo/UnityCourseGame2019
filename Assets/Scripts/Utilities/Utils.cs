@@ -34,12 +34,4 @@ public static class Utils
         }
         return hasHealth;
     }
-
-    public static GameController GameController
-    {
-        get
-        {
-            return GameObject.Find("GameController").GetComponent<GameController>();
-        }
-    }
 }

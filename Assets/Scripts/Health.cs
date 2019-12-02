@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,48 +7,69 @@ public class Health : MonoBehaviour
 {
     public float maxHealth;
 
-    float currHealth;
+    float _currHealth;
+    public float HealthValue
+    {
+        get { return _currHealth; }
+        set 
+        {
+            _currHealth = value;
+
+            UpdateHealthBar();
+
+            if (_currHealth <= 0)
+                Empty?.Invoke(this, null);
+        }
+    }
+
+    IHealthBar healthBar;
+
+    public event EventHandler Empty;
 
     // Start is called before the first frame update
     void Start()
     {
-        currHealth = maxHealth;
+        HealthValue = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void AttachHealthBar(IHealthBar healthBar) {
+        this.healthBar = healthBar;
     }
 
     public void InflictDamage(float damage)
     {
-        if (currHealth > 0) {
-            currHealth -= damage;
+        if (HealthValue > 0) {
+            HealthValue -= damage;
         }
     }
 
     public void Heal(float amount)
     {
-        if (currHealth + amount > maxHealth) {
-            currHealth = maxHealth;
+        if (HealthValue + amount > maxHealth) {
+            HealthValue = maxHealth;
         } else {
-            currHealth += amount;
+            HealthValue += amount;
         }
     }
 
     public float GetPercent()
     {
-        return currHealth / maxHealth;
+        return HealthValue / maxHealth;
     }
 
     public bool HasHealth() 
     {
-        return currHealth > 0;
+        return HealthValue > 0;
     }
 
     public void HealFull()
     {
-        currHealth = maxHealth;
+        HealthValue = maxHealth;
+    }
+
+    void UpdateHealthBar()
+    {
+        if (healthBar != null)
+            this.healthBar.UpdateBar(GetPercent());
     }
 }

@@ -1,64 +1,78 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Health))]
+[RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour
 {
-    public bool moving;
+    // Movement
+    public bool canMove;
     public Vector2 from;
     public Vector2 to;
     public float moveSpeed;
 
-    public Vector2 healthBarDelta;
-    
-    public int coins;
-    public float coinForce;
-
-    public float damage;
-    public float knockbackForce;
-
-    public GameObject coinPrefab;
-    public GameObject healthBarPrefab;
-
+    new Rigidbody2D rigidbody;
     bool headingTo = true;
     bool facingRight = false;
 
-    new Rigidbody2D rigidbody;
+    // Stats
+    public float damage;
+    public float knockbackForce;
+
+    // Health
+    public Vector2 healthBarDelta;
+    public GameObject healthBarPrefab;
+
+    GameObject healthBarGo;
+    Health health;
+    
+    // Death
+    public int coinDrops;
+    public float coinForce;
+    public GameObject coinPrefab;
+    public GameObject deathParticles;
 
     Animator animator = null;
     bool animated = false;
 
-    GameObject healthBarGo;
-    HealthBar healthBar;
-    Health health;
     Vector3 initialPos;
 
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        if (canMove) {
+            rigidbody = GetComponent<Rigidbody2D>();
+            rigidbody.freezeRotation = true;
+        }
 
         animated = TryGetComponent(typeof(Animator), out Component animatorComponent);
         if (animated)
             animator = (Animator)animatorComponent;
-        
-        healthBarGo = Factory.CreateHealthBar(transform, healthBarPrefab, healthBarDelta);
-        healthBar = healthBarGo.GetComponent<HealthBar>();
+
         health = GetComponent<Health>();
+        health.Empty += OnDeath;
+        
+        healthBarGo = Factory.CreateFollowHealthBar(transform, healthBarPrefab, healthBarDelta);
+        health.AttachHealthBar(healthBarGo.GetComponent<FollowHealthBar>());
 
         initialPos = transform.position;
+
+        OnStart();
     }
 
-    // Update is called once per frame
+    protected virtual void OnStart() {}
+
     void Update()
     {
-        CheckHealth();
+        OnUpdate();
     }
+
+    protected virtual void OnUpdate() {}
 
     void FixedUpdate()
     {
-        if (moving) {
+        if (canMove) {
             Move();
         }
     }
@@ -68,11 +82,31 @@ public class Enemy : MonoBehaviour
     }
 
     public void Respawn() {
-        Debug.Log("Respawning");
         transform.position = initialPos;
         health.HealFull();
-        healthBar.UpdateBar(health.GetPercent());
         gameObject.SetActive(true);
+    }
+
+    void OnDeath(object sender, EventArgs e)
+    {
+        SpawnCoins();
+        Instantiate(deathParticles, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
+        healthBarGo.SetActive(false);
+
+        if (gameObject.name.StartsWith("Slime")) {
+            Global.GameController.AchievementSystem.AddProgress("Kill 5 slimes");
+        }
+    }
+
+    void SpawnCoins()
+    {
+        for (int i = 0; i < coinDrops; i++)
+        {
+            Vector2 dir = new Vector2(UnityEngine.Random.Range(0, 100) * 0.006f - 0.3f, UnityEngine.Random.Range(0.8f, 1));
+            GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            coin.GetComponent<Rigidbody2D>().AddForce(dir.normalized * coinForce, ForceMode2D.Impulse);
+        }
     }
 
     void Move()
@@ -91,36 +125,10 @@ public class Enemy : MonoBehaviour
 
         rigidbody.velocity = diff.normalized * moveSpeed * Time.fixedDeltaTime * 10;
 
-        FlipWithVelocity();
+        FlipByVelocity();
     }
 
-    void OnDeath()
-    {
-        SpawnCoins();
-        gameObject.SetActive(false);
-        healthBarGo.SetActive(false);
-    }
-    
-    void CheckHealth()
-    {
-        healthBar.UpdateBar(health.GetPercent());
-        
-        if (!health.HasHealth()) {
-            OnDeath();
-        }
-    }
-
-    void SpawnCoins()
-    {
-        for (int i = 0; i < coins; i++)
-        {
-            Vector2 dir = new Vector2(Random.Range(0, 100) * 0.006f - 0.3f, Random.Range(0.8f, 1));
-            GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
-            coin.GetComponent<Rigidbody2D>().AddForce(dir.normalized * coinForce, ForceMode2D.Impulse);
-        }
-    }
-
-    void FlipWithVelocity()
+    void FlipByVelocity()
     {
         if (!facingRight && rigidbody.velocity.x > 0 ||
             facingRight && rigidbody.velocity.x < 0) {
