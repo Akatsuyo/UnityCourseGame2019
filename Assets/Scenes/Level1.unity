@@ -623,11 +623,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8788466728121703129, guid: 96ca2b5ef9d8c9246acb206c67debf2b,
         type: 3}
-      propertyPath: canMove
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8788466728121703129, guid: 96ca2b5ef9d8c9246acb206c67debf2b,
-        type: 3}
       propertyPath: from.x
       value: 81
       objectReference: {fileID: 0}
@@ -967,11 +962,6 @@ PrefabInstance:
       propertyPath: to.y
       value: -2.2
       objectReference: {fileID: 0}
-    - target: {fileID: 6072309933295834730, guid: 339ea4aec7ce033449c6a8905f3d8746,
-        type: 3}
-      propertyPath: canMove
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 339ea4aec7ce033449c6a8905f3d8746, type: 3}
 --- !u!1 &1057018968
@@ -1070,11 +1060,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6072309933295834730, guid: 339ea4aec7ce033449c6a8905f3d8746,
-        type: 3}
-      propertyPath: canMove
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6072309933295834730, guid: 339ea4aec7ce033449c6a8905f3d8746,
         type: 3}
@@ -2937,21 +2922,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3714072538008627180, guid: d28ebc41164e024429f8ce3d023c3875,
-        type: 3}
-      propertyPath: maxHealth
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 486393666104870301, guid: d28ebc41164e024429f8ce3d023c3875,
         type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1740617739}
-    - target: {fileID: 486393666104870301, guid: d28ebc41164e024429f8ce3d023c3875,
-        type: 3}
-      propertyPath: bulletSpeed
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8097167872230341330, guid: d28ebc41164e024429f8ce3d023c3875,
         type: 3}
       propertyPath: m_GravityScale
@@ -2960,6 +2935,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9006096714640648387, guid: d28ebc41164e024429f8ce3d023c3875, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d28ebc41164e024429f8ce3d023c3875, type: 3}
+--- !u!1 &1928368278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7695345979750003074, guid: d28ebc41164e024429f8ce3d023c3875,
+    type: 3}
+  m_PrefabInstance: {fileID: 1928368277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1932404308
 GameObject:
   m_ObjectHideFlags: 0
@@ -3292,6 +3273,8 @@ GameObject:
   - component: {fileID: 1990334365}
   - component: {fileID: 1990334367}
   - component: {fileID: 1990334366}
+  - component: {fileID: 1990334369}
+  - component: {fileID: 1990334368}
   m_Layer: 8
   m_Name: SlidingDoor1
   m_TagString: Untagged
@@ -3388,6 +3371,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1990334368
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990334364}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6a3df30e86211f7438e66d27f338ad49, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1990334369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990334364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 700536a88febc7540958abda394606fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 1928368278}
 --- !u!1001 &2001154016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3613,21 +3628,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3714072538008627180, guid: d28ebc41164e024429f8ce3d023c3875,
-        type: 3}
-      propertyPath: maxHealth
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 486393666104870301, guid: d28ebc41164e024429f8ce3d023c3875,
         type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1740617739}
-    - target: {fileID: 486393666104870301, guid: d28ebc41164e024429f8ce3d023c3875,
-        type: 3}
-      propertyPath: bulletSpeed
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8097167872230341330, guid: d28ebc41164e024429f8ce3d023c3875,
         type: 3}
       propertyPath: m_GravityScale

@@ -104,7 +104,8 @@ public class Enemy : MonoBehaviour
         for (int i = 0; i < coinDrops; i++)
         {
             Vector2 dir = new Vector2(UnityEngine.Random.Range(0, 100) * 0.006f - 0.3f, UnityEngine.Random.Range(0.8f, 1));
-            GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            Vector2 pos = new Vector2(transform.position.x + UnityEngine.Random.value - 0.5f, transform.position.y + UnityEngine.Random.value);
+            GameObject coin = Instantiate(coinPrefab, pos, Quaternion.identity);
             coin.GetComponent<Rigidbody2D>().AddForce(dir.normalized * coinForce, ForceMode2D.Impulse);
         }
     }
